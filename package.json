@@ -1,0 +1,22 @@
+{
+  "name": "glitzmia-backend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "cd BACKEND && node start-server.js",
+    "dev": "cd BACKEND && nodemon start-server.js",
+    "install-deps": "cd BACKEND && npm install"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.19.1",
+    "nodemailer": "^7.0.9",
+    "razorpay": "^2.9.6"
+  }
+}
