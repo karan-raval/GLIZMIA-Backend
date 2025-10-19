@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>GLITZMIA Backend API Test</h1>
+    
+    <div class="test-section">
+        <h3>1. Test Server Connection</h3>
+        <button onclick="testServer()">Test /test endpoint</button>
+        <div id="server-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>2. Test Razorpay Health</h3>
+        <button onclick="testRazorpayHealth()">Test /api/razorpay/health</button>
+        <div id="razorpay-health-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>3. Test Razorpay Key</h3>
+        <button onclick="testRazorpayKey()">Test /api/razorpay/key</button>
+        <div id="razorpay-key-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>4. Test Order Creation</h3>
+        <button onclick="testOrderCreation()">Test /api/razorpay/create-order</button>
+        <div id="order-creation-result"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5010';
+        
+        async function testServer() {
+            const resultDiv = document.getElementById('server-result');
+            try {
+                const response = await fetch(`${API_BASE}/test`);
+                const data = await response.json();
+                resultDiv.innerHTML = `<div class="success"><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error"><pre>Error: ${error.message}</pre></div>`;
+            }
+        }
+        
+        async function testRazorpayHealth() {
+            const resultDiv = document.getElementById('razorpay-health-result');
+            try {
+                const response = await fetch(`${API_BASE}/api/razorpay/health`);
+                const data = await response.json();
+                resultDiv.innerHTML = `<div class="success"><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error"><pre>Error: ${error.message}</pre></div>`;
+            }
+        }
+        
+        async function testRazorpayKey() {
+            const resultDiv = document.getElementById('razorpay-key-result');
+            try {
+                const response = await fetch(`${API_BASE}/api/razorpay/key`);
+                const data = await response.json();
+                resultDiv.innerHTML = `<div class="success"><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error"><pre>Error: ${error.message}</pre></div>`;
+            }
+        }
+        
+        async function testOrderCreation() {
+            const resultDiv = document.getElementById('order-creation-result');
+            try {
+                const testOrder = {
+                    items: [
+                        {
+                            productId: '507f1f77bcf86cd799439011', // Dummy ObjectId
+                            quantity: 1
+                        }
+                    ],
+                    customerDetails: {
+                        name: 'Test Customer',
+                        email: 'test@example.com',
+                        phone: '9999999999',
+                        address: {
+                            street: 'Test Street',
+                            city: 'Test City',
+                            state: 'Test State',
+                            pincode: '123456'
+                        }
+                    }
+                };
+                
+                const response = await fetch(`${API_BASE}/api/razorpay/create-order`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(testOrder)
+                });
+                
+                const data = await response.json();
+                resultDiv.innerHTML = `<div class="success"><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error"><pre>Error: ${error.message}</pre></div>`;
+            }
+        }
+        
+        // Auto-test on page load
+        window.onload = function() {
+            testServer();
+            testRazorpayHealth();
+            testRazorpayKey();
+        };
+    </script>
+</body>
+</html>
